@@ -1,0 +1,32 @@
+#include <DHT.h>
+#define DHTPIN A0
+#define DHTTYPE DHT11
+#define FAN 9
+
+DHT dht(DHTPIN, DHTTYPE);
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(FAN, OUTPUT);
+  dht.begin();
+  Serial.println("Smart EV Cabin Cooling System");
+}
+
+void loop() {
+  float temp = dht.readTemperature();
+  float hum = dht.readHumidity();
+
+  Serial.print("Temp: ");
+  Serial.print(temp);
+  Serial.print("C  Hum: ");
+  Serial.print(hum);
+  Serial.println("%");
+
+  if(temp > 28) {
+    digitalWrite(FAN, HIGH);
+  } else {
+    digitalWrite(FAN, LOW);
+  }
+
+  delay(2000);
+}
